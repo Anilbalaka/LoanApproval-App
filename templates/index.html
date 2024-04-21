@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Application</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    .bg-container {
+      min-height: 100vh;
+      width: 100vw;
+      background-size: cover;
+      background-image: linear-gradient(120deg, #c4c0fc 0%, #c2e9fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+ 
+    .card {
+      min-height: 70vh;
+      min-width: 80vw;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      background-image: url('https://i.postimg.cc/jjpRyLqc/person-using-currency-exchange-app.jpg'); 
+    }
+   
+    .input-element {
+      margin-bottom: 20px;
+    }
+   
+    .heading {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: rgb(105, 41, 165);
+      font-weight: bolder;
+    }
+   
+    .button {
+      border-radius: 20px;
+      height: 45px;
+      width: 200px;
+      border-width: 0px;
+      background-color: rgb(52, 52, 243);
+      color: whitesmoke;
+    }
+   
+    .form-control  {
+      border-radius: 50px;
+      height: 50px;
+      background-color: transparent;
+      border-color: rgb(14, 70, 153);
+      color: rgb(0, 0, 0);
+    }
+   
+    .btn-container {
+      margin-top: 40px;
+      text-align: center;
+    }
+   
+    .error-message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+ 
+  <div class="bg-container">
+   
+    <div class="card">
+ 
+      <form action="/predict" method="post" onsubmit="return validateForm()">
+     
+        <h4 class="heading">Loan Application</h4>
+      
+        <div class="row">
+         
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div>
+             
+              <div class="input-element">
+                <input id="loanId" name="loanId" type="text" class="form-control" placeholder="Loan ID" onblur="checkField(this)">
+                <span id="loanIdError" class="error-message"></span>
+              </div>
+        
+              <div class="input-element">
+                <label>Gender:</label><br>
+                <input id="male" name="gender" type="radio" value="male">
+                <label for="male">Male</label>
+                <input id="female" name="gender" type="radio" value="female">
+                <label for="female">Female</label>
+                <input id="others" name="gender" type="radio" value="others">
+                <label for="others">Others</label>
+                <!-- Add error message span for gender -->
+                <span id="genderError" class="error-message"></span>
+              </div>
+             
+              <div class="input-element">
+                <label for="marital-status">Married:</label>
+                <select id="marital-status" name="marital-status" class="form-select" aria-label="Marital Status" onblur="checkField(this)">
+                  <option selected>Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <!-- Add error message span for marital status -->
+                <span id="maritalStatusError" class="error-message"></span>
+              </div>
+              
+              <div class="input-element">
+                <input id="number-of-dependents" name="number-of-dependents" type="number" class="form-control" placeholder="Number of Dependents" onblur="checkField(this)">
+                <span id="numberOfDependentsError" class="error-message"></span>
+              </div>
+             
+              <div class="input-element">
+                <label for="education">Education:</label>
+                <select id="education" name="education" class="form-select" aria-label="Education" onblur="checkField(this)">
+                  <option selected>Select</option>
+                  <option value="graduated">Graduated</option>
+                  <option value="not-graduated">Not Graduated</option>
+                </select>
+                <!-- Add error message span for education -->
+                <span id="educationError" class="error-message"></span>
+              </div>
+             
+              <div class="input-element">
+                <label for="self-employed">Self Employed:</label>
+                <select id="self-employed" name="self-employed" class="form-select" aria-label="Self Employed" onblur="checkField(this)">
+                  <option selected>Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <!-- Add error message span for self-employed -->
+                <span id="selfEmployedError" class="error-message"></span>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="input-element">
+              <input id="income" name="income" type="text" class="form-control" placeholder="Applicant Income" onblur="checkField(this)">
+              <span id="incomeError" class="error-message"></span>
+            </div>
+          
+            <div class="input-element">
+              <input id="co-income" name="co-income" type="text" class="form-control" placeholder="Co-Applicant Income" onblur="checkField(this)">
+              <span id="coIncomeError" class="error-message"></span>
+            </div>
+            <!-- Input element for loan amount -->
+            <div class="input-element">
+                <input id="loanAmount" name="loanAmount" type="text" class="form-control" placeholder="Loan Amount" onblur="checkField(this)" onchange="checkLoanAmount(this)">
+                <span id="loanAmountError" class="error-message"></span>
+              </div>
+            <!-- Input element for term (months) -->
+            <div class="input-element">
+              <input id="months" name="months" type="text" class="form-control" placeholder="Term (Months)" onblur="checkField(this)">
+              <span id="monthsError" class="error-message"></span>
+            </div>
+            <!-- Input element for credit score -->
+            <div class="input-element">
+              <input id="score" name="score" type="text" class="form-control" placeholder="Credit Score" onblur="checkField(this)">
+              <span id="scoreError" class="error-message"></span>
+            </div>
+            <!-- Input element for area address -->
+            <div class="input-element">
+              <label>Address:</label><br>
+              <input id="Urban" name="address" type="radio" value="urban">
+              <label for="Urban">Urban</label>
+              <input id="Semiurban" name="address" type="radio" value="semiurban">
+              <label for="Semiurban">Semiurban</label>
+              <input id="rural" name="address" type="radio" value="rural">
+              <label for="Rural">Rural</label>
+          </div>
+        </div>
+        <!-- Button container -->
+        <div class="btn-container">
+          <!-- Submit button -->
+          <button type="submit" class="button">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var inputs = document.getElementsByClassName("form-control");
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('blur', function () {
+          checkField(this);
+        });
+        if (inputs[i].id === "loanAmount") {
+          inputs[i].addEventListener('change', function () {
+            checkLoanAmount(this);
+          });
+        }
+      }
+    });
+  
+    function validateForm() {
+      var inputs = document.getElementsByClassName("form-control");
+      var isValid = true;
+  
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value.trim() === "") {
+          alert("Field is required for " + inputs[i].placeholder);
+          isValid = false;
+        }
+      }
+  
+      return isValid;
+    }
+  
+    function checkField(input) {
+      var value = input.value.trim();
+      var errorMessageId = input.id + "Error";
+      var errorMessageElement = document.getElementById(errorMessageId);
+  
+      if (value === "") {
+        errorMessageElement.textContent = "Field is required.";
+      } else {
+        errorMessageElement.textContent = "";
+      }
+    }
+  
+    function checkLoanAmount(input) {
+      var value = parseFloat(input.value.trim());
+      var errorMessageId = input.id + "Error";
+      var errorMessageElement = document.getElementById(errorMessageId);
+  
+      if (isNaN(value) || value <= 50000) {
+        errorMessageElement.textContent = "Loan amount must be more than 50000.";
+      } else {
+        errorMessageElement.textContent = "";
+      }
+    }
+  </script>
+</body>
+</html>
